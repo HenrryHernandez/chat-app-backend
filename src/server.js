@@ -5,7 +5,9 @@ const cors = require("cors");
 class Server {
   app;
   port;
-  paths = {};
+  paths = {
+    users: "/api/v1/users",
+  };
 
   constructor() {
     this.app = express();
@@ -35,7 +37,9 @@ class Server {
       .catch((error) => console.log(error));
   }
 
-  routes() {}
+  routes() {
+    this.app.use(this.paths.users, require("./routes/users.routes"));
+  }
 
   listen() {
     this.app.listen(this.port, () => {
