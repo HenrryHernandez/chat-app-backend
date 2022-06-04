@@ -7,6 +7,7 @@ class Server {
   port;
   paths = {
     users: "/api/v1/users",
+    chats: "/api/v1/chats",
   };
 
   constructor() {
@@ -39,6 +40,7 @@ class Server {
 
   routes() {
     this.app.use(this.paths.users, require("./routes/users.routes"));
+    this.app.use(this.paths.chats, require("./routes/chats.routes"));
   }
 
   listen() {

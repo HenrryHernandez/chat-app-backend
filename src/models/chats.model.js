@@ -1,26 +1,26 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
-const userSchema = new mongoose.Schema({
-  username: {
+const chatScheme = mongoose.Schema({
+  name: {
     type: String,
-    required: [true, "It is required"],
+    required: true,
     unique: true,
     maxlength: [20, "The maximum number of characters allowed is 20"],
     minlength: [4, "The minimum number of characters allowed is 4"],
   },
-  password: {
-    type: String,
-    required: [true, "Password must be provided"],
-  },
-  chats: [
+  users: [
     {
       type: ObjectId,
-      ref: "Chat",
+      ref: "User",
     },
   ],
+  isGroup: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const User = mongoose.model("User", userSchema);
+const Chat = mongoose.model("Chat", chatScheme);
 
-module.exports = User;
+module.exports = Chat;

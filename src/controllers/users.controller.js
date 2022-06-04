@@ -15,4 +15,14 @@ const createNewUser = async (req, res) => {
   }
 };
 
-module.exports = { createNewUser };
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+
+    res.status(201).json({ msg: "success", users });
+  } catch (error) {
+    res.status(500).json({ msg: "something went wrong", error });
+  }
+};
+
+module.exports = { createNewUser, getUsers };
