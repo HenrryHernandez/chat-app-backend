@@ -1,10 +1,11 @@
+const http = require("http");
 const express = require("express");
 const mongoose = require("mongoose");
+const socketio = require("socket.io");
 const cors = require("cors");
+const Socket = require("./classes/socket.class");
 
 class Server {
-  app;
-  port;
   paths = {
     users: "/api/v1/users",
     chats: "/api/v1/chats",
@@ -14,8 +15,11 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT || 8000;
+    this.server = http.createServer(this.app);
+    this.io = socketio(this.server, {});
 
     this.middlewares();
+    this.configureSockets();
     this.database();
     this.routes();
   }
@@ -23,6 +27,10 @@ class Server {
   middlewares() {
     this.app.use(cors());
     this.app.use(express.json());
+  }
+
+  configureSockets() {
+    new Socket(this.io);
   }
 
   database() {
@@ -46,7 +54,10 @@ class Server {
   }
 
   listen() {
-    this.app.listen(this.port, () => {
+    // this.app.listen(this.port, () => {
+    //   console.log("listening on port", this.port);
+    // });
+    this.server.listen(this.port, () => {
       console.log("listening on port", this.port);
     });
   }
