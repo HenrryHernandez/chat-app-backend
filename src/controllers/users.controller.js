@@ -25,4 +25,21 @@ const getUsers = async (req, res) => {
   }
 };
 
-module.exports = { createNewUser, getUsers };
+const getUser = async (req, res) => {
+  const { user } = req;
+  const { __v, password, username, chats } = user;
+
+  try {
+    res.status(200).json({
+      success: true,
+      msg: "success",
+      data: { user: { username, chats } },
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, msg: "something went wrong", data: { error } });
+  }
+};
+
+module.exports = { createNewUser, getUsers, getUser };
