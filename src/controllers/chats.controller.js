@@ -37,4 +37,20 @@ const getChats = async (req, res) => {
   }
 };
 
-module.exports = { createChat, joinUserToChat, getChats };
+const getChatsSearch = async (req, res) => {
+  const { name } = req.params;
+
+  try {
+    const chats = await Chat.find({ name: { $regex: name } }).select(
+      "name isGroup"
+    );
+
+    res.status(201).json({ success: true, msg: "success", data: { chats } });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, msg: "something went wrong", data: { error } });
+  }
+};
+
+module.exports = { createChat, joinUserToChat, getChats, getChatsSearch };
