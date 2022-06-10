@@ -5,7 +5,7 @@ const login = async (req, res) => {
   const { username: userName } = req.body;
 
   try {
-    const { _id, username, chats } = await User.findOne({ userName });
+    const { _id, username, chats } = await User.findOne({ username: userName });
 
     const token = await generateJWT(_id);
 
