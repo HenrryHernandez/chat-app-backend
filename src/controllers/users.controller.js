@@ -38,7 +38,7 @@ const getUser = async (req, res) => {
     res.status(200).json({
       success: true,
       msg: "success",
-      data: { user: { username, chats, id: _id } },
+      data: { user: { username, chats, _id } },
     });
   } catch (error) {
     res
