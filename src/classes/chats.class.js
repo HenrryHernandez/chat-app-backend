@@ -1,3 +1,6 @@
+const { v4 } = require("uuid");
+const uuidv4 = v4;
+
 class Chats {
   constructor() {
     this.chats = {};
@@ -21,9 +24,13 @@ class Chats {
 
     const chat = this.chats[id];
 
-    chat.messages.unshift(message);
+    const messageObj = { id: uuidv4(), message };
+
+    chat.messages.unshift(messageObj);
 
     if (chat.messages.length > 10) chat.messages.pop();
+
+    return messageObj;
   }
 }
 
