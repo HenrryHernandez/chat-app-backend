@@ -1,6 +1,10 @@
 const express = require("express");
 
 const {
+  chatExists,
+  userHasNotBeenJoinedToChat,
+} = require("../helpers/custom-validators");
+const {
   createChat,
   joinUserToChat,
   getChats,
@@ -10,7 +14,7 @@ const {
 const route = express.Router();
 
 route.post("/", createChat);
-route.patch("/", joinUserToChat);
+route.patch("/", [chatExists, userHasNotBeenJoinedToChat], joinUserToChat);
 route.get("/", getChats);
 route.get("/search/:name", getChatsSearch);
 

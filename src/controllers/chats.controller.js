@@ -15,13 +15,13 @@ const createChat = async (req, res) => {
 };
 
 const joinUserToChat = async (req, res) => {
-  const { userId, groupId } = req.body;
+  const { userId, chatId } = req.body;
 
   try {
-    await Chat.findByIdAndUpdate(groupId, { $push: { users: [userId] } });
-    await User.findByIdAndUpdate(userId, { $push: { chats: [groupId] } });
+    await Chat.findByIdAndUpdate(chatId, { $push: { users: [userId] } });
+    await User.findByIdAndUpdate(userId, { $push: { chats: [chatId] } });
 
-    res.status(201).json({ msg: "success" });
+    res.status(201).json({ success: true, msg: "success", data: null });
   } catch (error) {
     res.status(500).json({ msg: "something went wrong", error });
   }

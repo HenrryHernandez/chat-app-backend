@@ -1,5 +1,6 @@
 const bcryptjs = require("bcryptjs");
 
+const Chat = require("../models/chats.model");
 const User = require("../models/users.model");
 
 const userExists = async (req, res, next) => {
@@ -33,4 +34,45 @@ const correctPassword = async (req, res, next) => {
   next();
 };
 
-module.exports = { userExists, correctPassword };
+const chatExists = async (req, res, next) => {
+  const { chatId } = req.body;
+
+  const chat = await Chat.findById(chatId);
+
+  if (!chat)
+    return res
+      .status(404)
+      .json({ success: false, msg: "the group doesn't exist", data: null });
+
+  next();
+};
+
+const userHasNotBeenJoinedToChat = async (req, res, next) => {
+  const { userId, chatId } = req.body;
+
+  try {
+    const { chats } = await User.findById(userId);
+
+    chats.forEach((chat) => {
+      if (chat.toString() === chatId)
+        return res.status(400).json({
+          success: false,
+          msg: "user is already in the group",
+          data: null,
+        });
+    });
+
+    next();
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, msg: "something went wrong", data: { error } });
+  }
+};
+
+module.exports = {
+  userExists,
+  correctPassword,
+  chatExists,
+  userHasNotBeenJoinedToChat,
+};
