@@ -26,14 +26,16 @@ const getUsers = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const { user } = req;
-  const { __v, password, username, chats } = user;
+  const { id } = req.params;
+  const user = await User.findById(id);
+
+  const { __v, password, username, chats, _id } = user;
 
   try {
     res.status(200).json({
       success: true,
       msg: "success",
-      data: { user: { username, chats } },
+      data: { user: { username, chats, id: _id } },
     });
   } catch (error) {
     res
