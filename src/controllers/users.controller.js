@@ -27,7 +27,10 @@ const getUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate({
+    path: "chats",
+    select: "name isGroup",
+  });
 
   const { __v, password, username, chats, _id } = user;
 
