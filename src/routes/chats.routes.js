@@ -14,7 +14,7 @@ const {
 const route = express.Router();
 
 route.post("/", createChat);
-route.patch("/", [chatExists, userHasNotBeenJoinedToChat], joinUserToChat);
+route.patch("/join", [chatExists, userHasNotBeenJoinedToChat], joinUserToChat);
 route.get("/", getChats);
 route.get("/search/:name", getChatsSearch);
 
