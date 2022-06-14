@@ -27,7 +27,7 @@ class Socket {
 
       socket.on("set-new-message", (id, message) => {
         const messageObj = this.chats.addMessageToChat(id, message);
-        socket.broadcast.emit(id, messageObj);
+        this.io.emit(id, messageObj);
       });
     });
   }
