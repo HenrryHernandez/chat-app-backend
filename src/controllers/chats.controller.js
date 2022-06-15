@@ -27,6 +27,29 @@ const joinUserToChat = async (req, res) => {
   }
 };
 
+const exitUserFromChat = async (req, res) => {
+  const { userId, chatId } = req.body;
+
+  try {
+    const userQuery = User.findByIdAndUpdate(userId, {
+      $pullAll: { chats: [chatId] },
+    });
+
+    const chatQuery = Chat.findByIdAndUpdate(chatId, {
+      $pullAll: { users: [userId] },
+    });
+
+    await Promise.all([userQuery, chatQuery]);
+
+    res.status(200).json({ success: true, msg: "success", data: null });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ succes: false, msg: "something went wrong", data: { error } });
+  }
+};
+
 const getChats = async (req, res) => {
   try {
     const chats = await Chat.find();
@@ -53,4 +76,10 @@ const getChatsSearch = async (req, res) => {
   }
 };
 
-module.exports = { createChat, joinUserToChat, getChats, getChatsSearch };
+module.exports = {
+  createChat,
+  joinUserToChat,
+  exitUserFromChat,
+  getChats,
+  getChatsSearch,
+};
